@@ -7,3 +7,9 @@
 *.bin
 *.sym
 /snes_src/build/
+
+gbdk_sgb_mouse_example/obj/
+gbdk_sgb_mouse_example/build/
+*.noi
+*.sav
+

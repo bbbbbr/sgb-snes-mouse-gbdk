@@ -10,6 +10,10 @@ Modified tools:
 - Change output to C const arrays
 - Include SGB command packet header and trailing zero padding in the arrays so that SGB packets are fully formed in ROM
 
+Example:
+- Changed from an RGBDS asm example to a GBDK-2020 C example
+
+
 # SGB Testbed
 
 This uses <https://github.com/ISSOtm/gb-starter-kit> as a template.

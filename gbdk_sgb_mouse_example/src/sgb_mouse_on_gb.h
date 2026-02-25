@@ -1,0 +1,22 @@
+#ifndef _SGB_MOUSE_ON_GB_H
+#define _SGB_MOUSE_ON_GB_H
+
+// In SGB Player 2
+#define SNES_MOUSE_X_DIR   0b10000000u   // .7: 1 = Left, 0 = Left, 6..0: Movement
+#define SNES_MOUSE_X_MASK  0b01111111u
+
+// In SGB Player 3
+#define SNES_MOUSE_Y_DIR   0b10000000u   // .7: 1 = Up, 0 = Up, 6..0: Movement
+#define SNES_MOUSE_Y_MASK  0b01111111u
+
+// In SGB Player 4
+#define SNES_MOUSE_BUTTON_LEFT       0b00000001u
+#define SNES_MOUSE_BUTTON_RIGHT      0b00000010u
+#define SNES_MOUSE_IS_CONNECTED      0b10100000u
+#define SNES_MOUSE_IS_CONNECTED_MASK 0b11110000u
+#define SNES_MOUSE_BUTTON_BOTH       (SNES_MOUSE_BUTTON_LEFT | SNES_MOUSE_BUTTON_RIGHT)
+#define SNES_MOUSE_BUTTON_MASK       (SNES_MOUSE_BUTTON_BOTH)
+
+void sgb_mouse_install(void);
+
+#endif // _SGB_MOUSE_ON_GB_H
