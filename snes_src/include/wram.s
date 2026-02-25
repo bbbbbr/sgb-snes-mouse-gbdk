@@ -10,10 +10,15 @@ wCurrMenuCursorY: ; $c22
     db
 
 wc23:
-    ds $f3a-$c23
+    ds $f36-$c23
 
 ; currently polled
+wVerticalMouseMovement:  ; $f36
+    ds 2
+wHorizontalMouseMovement: ; $f38
+    ds 2
 wCurrMouseRLbits: ; $f3a
     ds 2
+
 
 .ends

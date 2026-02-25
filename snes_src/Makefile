@@ -5,3 +5,6 @@ build/main.o: code/main.s hacks/*
 
 main.bin: build/main.o
 	wlalink -b -S linkfile $@
+
+packets:
+	python3 tools/gen_packets.py 0900

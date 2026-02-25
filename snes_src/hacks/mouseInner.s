@@ -1,21 +1,23 @@
 .org $900
 
 SendGamepadAndMouseToGB:
-    phk
-    pea @jslrtsreturn-1
-    pea $d7f4-1 ; Known bank 1 rtl
-; Call 3 mouse-related routines
-    jml $01d7fb ; UpdateMenuCursorPosWithMouse
-@jslrtsreturn:
-    jsr $d1b0 ; AnimateMainMenuCursor
-    jsr $cfd5 ; UpdateMenuCursorShadowOam
+;     phk
+;     pea @jslrtsreturn-1
+;     pea $d7f4-1 ; Known bank 1 rtl
+; ; Call 3 mouse-related routines
+;     jml $01d7fb ; UpdateMenuCursorPosWithMouse
+; @jslrtsreturn:
+;     jsr $d1b0 ; AnimateMainMenuCursor
+;     jsr $cfd5 ; UpdateMenuCursorShadowOam
 
+; For relative addresses see: https://codeberg.org/ISSOtm/sgb-bios/src/commit/dcf599c259b9875eba3d21659c76602bf9d67acb/src/wram.asm#L253
+;
 ; Send over mouse details
-    lda wCurrMenuCursorX ; Mouse X to P2
+    lda wHorizontalMouseMovement+1 ; Mouse X relative deltas (SNES mouse format, bits inverted) to P2
     sta ICD2P2.l
-    lda wCurrMenuCursorY ; Mouse Y to P3
+    lda wVerticalMouseMovement+1   ; Mouse Y relative deltas (SNES mouse format, bits inverted) to P3
     sta ICD2P3.l
-    lda wCurrMouseRLbits+1 ; P2 mouse RL bits to P4
+    lda wCurrMouseRLbits+1         ; Mouse button RL bits (0x02u for Left, 0x01 for Right) to P4
     sta ICD2P4.l
 
 ; P1 controls and skipping normal input send routine is revision-specific
