@@ -72,6 +72,7 @@ PACKET_SIZE equ _NARG - 1 ; Size of what's below
 	ENDR
 
 	ds SGB_PACKET_SIZE - PACKET_SIZE, 0
+    PURGE PACKET_SIZE
 ENDM
 
 
