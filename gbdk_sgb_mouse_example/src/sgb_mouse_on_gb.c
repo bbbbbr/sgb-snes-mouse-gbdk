@@ -7,8 +7,6 @@
 #define SGB_PACKET_SIZE 16u
 #define SGB_PAYLOAD_LEN (SGB_PACKET_SIZE - 1u)
 
-static uint8_t sgb_buf[SGB_PACKET_SIZE]; // Max size for DATA_SND
-
 // MouseHook:
 // https://github.com/bbbbbr/sgb-testbed/blob/a10011c71f6ed66e3f16a7c097611a9e899b3eb5/snes_src/hacks/mouseHook.s#L3
 //
