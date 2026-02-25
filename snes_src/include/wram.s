@@ -10,9 +10,15 @@ wCurrMenuCursorY: ; $c22
     db
 
 wc23:
-    ds $f36-$c23
+    ds $f30-$c23
 
 ; currently polled
+wIsMouseConnected:  ; $f30
+    ds 2
+wTargetMouseSensitivity:  ; $f32
+    ds 2
+wCurrentMouseSensitivity:  ; $f34
+    ds 2
 wVerticalMouseMovement:  ; $f36
     ds 2
 wHorizontalMouseMovement: ; $f38
