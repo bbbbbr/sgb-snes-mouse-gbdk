@@ -5,6 +5,7 @@ Modified the SGB Mouse handling:
 - Use relative deltas from the hardware instead of absolute SNES x,y screen positions
 - Include mouse connected status with button data
 - Invert values so the bits are active high on the GB side
+- Turn off mouse cursor update and display on the SNES side (so GB can display cursor instead)
 
 Modified tools:
 - Change output to C const arrays
