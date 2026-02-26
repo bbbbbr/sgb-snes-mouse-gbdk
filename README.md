@@ -10,9 +10,13 @@ Modified tools:
 - Change output to C const arrays
 - Include SGB command packet header and trailing zero padding in the arrays so that SGB packets are fully formed in ROM
 
-Example:
+Example program:
 - Changed from an RGBDS asm example to a GBDK-2020 C example
 
+Possible other changes:
+- A status bit about whether the SGB menu is open (activated when pressing Mouse L+R together) so the GB can suppress mouse interaction temporarily
+- Including mouse acceleration state
+- A mechanism to request changing acceleration (there appear to be some control vars)
 
 # SGB Testbed
 
