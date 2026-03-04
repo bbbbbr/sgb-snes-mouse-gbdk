@@ -9,4 +9,4 @@ main.bin: build/main.o
 clean:
 	rm build/main.o main.bin main.sym
 packets:
-	python3 tools/gen_packets.py 0900
+	python3 tools/gen_packets.py 0902

@@ -6,6 +6,7 @@ Modified the SGB Mouse handling:
 - Include mouse connected status with button data
 - Invert values so the bits are active high on the GB side
 - Turn off mouse cursor update and display on the SNES side (so GB can display cursor instead)
+- Status bit indicating if SGB menu is open (activated when pressing Mouse or GamePad L+R together) so GB can optionally ignore mouse interaction
 
 Modified tools:
 - Change output to C const arrays
@@ -15,7 +16,7 @@ Example program:
 - Changed from an RGBDS asm example to a GBDK-2020 C example
 
 Possible other changes:
-- A status bit about whether the SGB menu is open (activated when pressing Mouse L+R together) so the GB can suppress mouse interaction temporarily
+- Suppress entering menu with the mouse
 - Including mouse acceleration state
 - A mechanism to request changing acceleration (there appear to be some control vars)
 

@@ -1,4 +1,4 @@
 .org $808
 
 PreGBMainLoopHook:
-	jmp $900
+	jmp $902
