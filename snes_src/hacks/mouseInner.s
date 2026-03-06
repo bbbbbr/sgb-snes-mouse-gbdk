@@ -10,7 +10,14 @@
 .DEFINE STAT_BYTE_CONNECTED      $A0
 .DEFINE STAT_BYTE_NOT_CONNECTED  $00
 
+.DEFINE MENU_HELD_BUTTON_TIMEOUT_MAX  $28
+
 SendGamepadAndMouseToGB:
+
+; Force mouse held button menu counter to max to prevent L + R mouse button combo from opening the menu.
+; Menu open action still accessible using GamePad L + R
+    lda  #MENU_HELD_BUTTON_TIMEOUT_MAX
+    sta  wMenuHeldTimoutMouse
 
 ; For relative addresses see: https://codeberg.org/ISSOtm/sgb-bios/src/commit/dcf599c259b9875eba3d21659c76602bf9d67acb/src/wram.asm#L253
 ;
@@ -36,7 +43,7 @@ SendGamepadAndMouseToGB:
 
         ; Check if menu is open, set indicator bit .3 if so
         lda  #MENU_IS_CLOSED_VAL
-        sbc  wSelectedMenuFeature        ; Check if menu is open. GB may choose to ignore mouse if so (0xFF = menu closed, 0x00 = menu open/visible)
+        sbc  wMenuActiveFeature          ; Check if menu is open. GB may choose to ignore mouse if so (0xFF = menu closed, 0x00 = menu open/visible)
         beq  @menu_check_done            ; If menu is closed (equal) then leave result as zero
             lda  #STAT_BYTE_MENU_OPEN    ; Menu is open, set indicator bit   
         @menu_check_done:
