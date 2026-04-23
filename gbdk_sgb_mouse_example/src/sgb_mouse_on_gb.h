@@ -2,11 +2,11 @@
 #define _SGB_MOUSE_ON_GB_H
 
 // In SGB Player 2
-#define SNES_MOUSE_X_DIR   0b10000000u   // .7: 1 = Left, 0 = Left, 6..0: Movement
+#define SNES_MOUSE_X_DIR   0b10000000u   // .7: 1 = Left, 0 = Right, 6..0: Movement
 #define SNES_MOUSE_X_MASK  0b01111111u
 
 // In SGB Player 3
-#define SNES_MOUSE_Y_DIR   0b10000000u   // .7: 1 = Up, 0 = Up, 6..0: Movement
+#define SNES_MOUSE_Y_DIR   0b10000000u   // .7: 1 = Up, 0 = Down, 6..0: Movement
 #define SNES_MOUSE_Y_MASK  0b01111111u
 
 // Status bits in SGB Player 4
