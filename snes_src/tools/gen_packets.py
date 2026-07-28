@@ -34,7 +34,7 @@ while i < cmd_len:
     data_bytes = ", ".join(f"0x{b:02x}" for b in packet_bytes)
     pad_length = SGB_PAYLOAD_LEN - len(packet_bytes)
     pad_bytes = "0x00, " * pad_length
-    print(f'const uint8_t sgb_mouse_handler_{packet_num}[] = {{ 0x{SGB_PACKET_HEADER:02x}, {data_bytes}, {pad_bytes}}};')
+    print(f'const uint8_t sgb_input_handler_{packet_num}[] = {{ 0x{SGB_PACKET_HEADER:02x}, {data_bytes}, {pad_bytes}}};')
     packet_num += 1
     i += max_param_len
     start_addr += max_param_len

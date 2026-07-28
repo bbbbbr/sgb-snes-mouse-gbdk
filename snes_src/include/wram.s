@@ -1,5 +1,7 @@
 .ramsection "LowRam" bank 0 slot 0
 
+; 2f2: Maybe number of players?
+
 w00:
     ds $900
 
@@ -34,7 +36,28 @@ wMenuActiveFeature:     ; $c4f  ; 0xFF = menu closed, other values indicate menu
 
 
 wc50:
-    ds $f30 - $c50
+    ds $f11 - $c50
+
+wJoyPad1Lo:                ; $f11
+    ds 1
+wJoyPad1Hi:                ; $f12
+    ds 1
+wJoyPad2Lo:                ; $f13
+    ds 1
+wJoyPad2Hi:                ; $f14
+    ds 1
+wJoyPad3Lo:                ; $f15
+    ds 1
+wJoyPad3Hi:                ; $f16
+    ds 1
+wJoyPad4Lo:                ; $f17
+    ds 1
+wJoyPad4Hi:                ; $f18
+    ds 1
+
+
+wf19:
+    ds $f30 - $f19
 
 ; currently polled
 wIsMouseConnected:         ; $f30
@@ -49,6 +72,7 @@ wHorizontalMouseMovement:  ; $f38
     ds 2
 wCurrMouseRLbits:          ; $f3a
     ds 2
+
 
 
 .ends

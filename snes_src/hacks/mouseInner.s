@@ -2,76 +2,67 @@
 ; wMenuStatusBitTemp: is at $900
 .org $902
 
-.DEFINE MOUSE_IS_CONNECTED_BIT   $01
-.DEFINE MENU_IS_CLOSED_VAL       $FF
-
-.DEFINE STAT_BYTE_LR_MASK        $03
-.DEFINE STAT_BYTE_MENU_OPEN      $04
-.DEFINE STAT_BYTE_CONNECTED      $A0
-.DEFINE STAT_BYTE_NOT_CONNECTED  $00
-
-.DEFINE MENU_HELD_BUTTON_TIMEOUT_MAX  $28
-
-SendGamepadAndMouseToGB:
-
-; Force mouse held button menu counter to max to prevent L + R mouse button combo from opening the menu.
-; Menu open action still accessible using GamePad L + R
-    lda  #MENU_HELD_BUTTON_TIMEOUT_MAX
-    sta  wMenuHeldTimoutMouse
-
-; For relative addresses see: https://codeberg.org/ISSOtm/sgb-bios/src/commit/dcf599c259b9875eba3d21659c76602bf9d67acb/src/wram.asm#L253
+; https://www.repairfaq.org/REPAIR/F_SNES.html
+; Clock Cycle     Button Reported
+; ===========     ===============
+; 1               B
+; 2               Y
+; 3               Select
+; 4               Start
+; 5               Up on joypad
+; 6               Down on joypad
+; 7               Left on joypad
+; 8               Right on joypad
 ;
-; Send over mouse details
-    lda  wHorizontalMouseMovement+1      ; Mouse X relative deltas (SNES mouse format, bits inverted) to P2
-    eor  #$ff                            ; Invert so data will be active high on the GB side
+; 9               A
+; 10              X
+; 11              L
+; 12              R
+; 13              none (always high)
+; 14              none (always high)
+; 15              none (always high)
+; 16              none (always high)
+
+RemapExtraButtonsToPlayers3and4:
+    .DEFINE MENU_HELD_BUTTON_TIMEOUT_MAX  $28
+    ; Force the L/R held button menu counter for both gamepads to max to prevent
+    ; L + R button combo from opening the menu.
+    lda  #MENU_HELD_BUTTON_TIMEOUT_MAX
+    sta  wMenuHeldTimoutGamepad      // Gamepad 1
+    sta  wMenuHeldTimoutGamepad + 1  // Gamepad 2
+
+    ; Note, the controller order here is going to match the SNES format instead
+    ; of the usual SGB format, so on the GB side it will be parsed a little different.
+    ; It could be remapped here with more work to what is normal for the GB.
+
+    ; Map the extra SNES controller/gamepad buttons from Players 1 and 2 into button data for SGB Players 3 and 4 
+    ; Controller 1
+    lda  wJoyPad1Hi
+    sta  ICD2P1.l
+    lda  wJoyPad1Lo
     sta  ICD2P2.l
 
-    lda  wVerticalMouseMovement+1        ; Mouse Y relative deltas (SNES mouse format, bits inverted) to P3
-    eor  #$ff                            ; Invert so data will be active high on the GB side
+    ; Controller 2
+    lda  wJoyPad2Hi
     sta  ICD2P3.l
-
-    ; Prepare and save Mouse status byte (in Player 4)
-
-    lda  wIsMouseConnected+1             ; Load mouse connected bit (located in bit .0)
-    and  #MOUSE_IS_CONNECTED_BIT         ; Test if mouse connected bit is set (zero bit not set -> bne, then it's connected)
-    bne  @mouse_is_connected
-        ; Mouse connected bit not set
-        lda  #STAT_BYTE_NOT_CONNECTED    ; All bits unset, not connected and no mouse button bits
-        jmp  @save_mouse_status_and_buttons
-
-    @mouse_is_connected:
-
-        ; Check if menu is open, set indicator bit .3 if so
-        lda  #MENU_IS_CLOSED_VAL
-        sbc  wMenuActiveFeature          ; Check if menu is open. GB may choose to ignore mouse if so (0xFF = menu closed, 0x00 = menu open/visible)
-        beq  @menu_check_done            ; If menu is closed (equal) then leave result as zero
-            lda  #STAT_BYTE_MENU_OPEN    ; Menu is open, set indicator bit   
-        @menu_check_done:
-        sta  wMenuStatusBitTemp          ; Store result in output temporarily
-
-        ; Mouse connected bit was set
-        lda  wCurrMouseRLbits+1          ; Mouse button RL bits (0x02u for Left, 0x01 for Right) to P4
-        and  #STAT_BYTE_LR_MASK          ; Mask to only button bits .1 and .0
-        ora  #STAT_BYTE_CONNECTED        ; Set bits .7 and .5, So Mouse connected test can be ((N & 0xF0) == 0xA0)
-        ora  wMenuStatusBitTemp          ; Or in the menu status bit
-
-    @save_mouse_status_and_buttons:
-    eor  #$ff                            ; Invert so data will be active high on the GB side
+    lda  wJoyPad2Lo
     sta  ICD2P4.l
 
 
 ; P1 controls and skipping normal input send routine is revision-specific
-    ldx #$00
+    ldx #$00  ; Select Joypad 0 for jsr subroutine call below to Send1JoypadsInputsToGB
     lda CART_VERSION.l
     beq @ver0
 
-    jsr $bca0 ; Send1JoypadsInputsToGB
+    ; jsr $bca0 ; Send1JoypadsInputsToGB  ; Don't call the update since we're overwriting controller 1 as well
     pla
     pla
     jmp $baaa ; Skip SendInputsToGB
 
 @ver0:
-    jsr $bca3 ; Send1JoypadsInputsToGB
+    ; jsr $bca3 ; Send1JoypadsInputsToGB  ; Don't call the update since we're overwriting controller 1 as well
     pla
     pla
     jmp $baad ; Skip SendInputsToGB
+
+

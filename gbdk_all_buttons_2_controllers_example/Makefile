@@ -31,7 +31,7 @@ endif
 
 
 # You can set the name of the ROM file here
-PROJECTNAME = sgb_mouse_on_gb
+PROJECTNAME = sgb_input_remap
 
 SRCDIR      = src
 OBJDIR      = obj/$(EXT)
